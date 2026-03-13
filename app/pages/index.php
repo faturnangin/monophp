@@ -34,7 +34,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
         <?php
         $features = [
-            ['icon' => '🔀', 'title' => 'Dynamic Routing',     'desc' => 'GET & POST routes with named URL parameters like {id}.'],
+            ['icon' => '🔀', 'title' => 'Dynamic Routing',     'desc' => 'Full RESTful routing (GET, POST, PUT, DELETE) with parameters.'],
             ['icon' => '🎨', 'title' => 'Layout System',       'desc' => 'Wrap any page in a reusable HTML layout template.'],
             ['icon' => '🧩', 'title' => 'Components',          'desc' => 'Reusable JSX-like components using uppercase tags.'],
             ['icon' => '🛡️', 'title' => 'Middleware',          'desc' => 'Global and route-specific guards for protection.'],
