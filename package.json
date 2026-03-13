@@ -1,0 +1,18 @@
+{
+  "name": "monophp",
+  "version": "1.0.0",
+  "description": "**MonoPHP** is a minimalist, experimental PHP framework that combines modern architecture — routing, layouts, reusable components, and a setup wizard — in a tiny, readable codebase. It integrates [Tailwind CSS](https://tailwindcss.com/) and [HTMX](https://htmx.org/) out of the box for a premium UI with zero build steps.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --watch",
+    "build": "tailwindcss -i resources/css/app.css -o public/assets/css/app.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.2.1"
+  }
+}
