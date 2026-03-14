@@ -10,6 +10,17 @@ require_once __DIR__ . '/../core/View.php';
 require_once __DIR__ . '/../core/ComponentParser.php';
 require_once __DIR__ . '/../core/Middleware.php';
 
+// ─── Autoload Controllers ─────────────────────────────────────────────────────
+spl_autoload_register(function ($class) {
+    // Only attempt to load classes that look like Controllers (optional restriction but good for safety)
+    if (str_ends_with($class, 'Controller')) {
+        $file = __DIR__ . '/../app/controllers/' . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+});
+
 // ─── Load environment & init helpers ─────────────────────────────────────────
 $envPath = __DIR__ . '/../.env';
 Env::load($envPath);
@@ -54,7 +65,6 @@ $router->post('/setup/configure', function () use ($envPath) {
         'APP_DEBUG' => isset($_POST['app_debug']) ? 'true' : 'false',
         'APP_SETUP' => 'pending',
     ]);
-    Env::load($envPath);
     header('Location: /setup/database');
     exit;
 });
@@ -77,7 +87,6 @@ $router->post('/setup/database', function () use ($envPath) {
                 'DB_HOST' => $host, 'DB_PORT' => $port, 'DB_DATABASE' => $db,
                 'DB_USERNAME' => $user, 'DB_PASSWORD' => $pass,
             ]);
-            Env::load($envPath);
             
             Database::connection(); // Test connection
             

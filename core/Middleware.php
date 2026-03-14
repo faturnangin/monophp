@@ -48,7 +48,6 @@ class Middleware
 
                 if (!$expected || !hash_equals($expected, $token)) {
                     http_response_code(403);
-                    http_response_code(403);
                     View::render('errors/403', [], 'main');
                     return false;
                 }

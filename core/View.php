@@ -24,8 +24,8 @@ class View
 
         $content = ComponentParser::parse($content);
 
-        // Detect HTMX partial request
-        if (isset($_SERVER['HTTP_HX_REQUEST'])) {
+        // Detect HTMX partial request or missing layout
+        if (isset($_SERVER['HTTP_HX_REQUEST']) || !file_exists($layoutFile)) {
             echo $content;
         } else {
             require $layoutFile;

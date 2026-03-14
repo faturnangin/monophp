@@ -15,7 +15,7 @@
 <body class="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4">
 
     <div class="w-full max-w-sm absolute top-8 left-8">
-        <a href="/" hx-get="/" hx-target="body" hx-push-url="true"
+        <a href="/" hx-get="/" hx-target="#page" hx-push-url="true"
            class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>

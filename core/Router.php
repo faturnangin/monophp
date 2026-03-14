@@ -11,19 +11,19 @@ class Router
     private array $routes = [];
 
     /** Register a GET route. */
-    public function get(string $path, callable $handler): void
+    public function get(string $path, callable|array $handler): void
     {
         $this->routes['GET'][] = ['path' => $path, 'handler' => $handler];
     }
 
     /** Register a POST route. */
-    public function post(string $path, callable $handler): void
+    public function post(string $path, callable|array $handler): void
     {
         $this->routes['POST'][] = ['path' => $path, 'handler' => $handler];
     }
 
     /** Register a route for any HTTP method. */
-    public function any(string $path, callable $handler): void
+    public function any(string $path, callable|array $handler): void
     {
         foreach (['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as $method) {
             $this->routes[$method][] = ['path' => $path, 'handler' => $handler];
@@ -68,7 +68,13 @@ class Router
             if (preg_match($pattern, $uri, $matches)) {
                 // Collect only named captures
                 $params = array_filter($matches, fn($k) => !is_int($k), ARRAY_FILTER_USE_KEY);
-                ($route['handler'])($params);
+                
+                $handler = $route['handler'];
+                if (is_array($handler) && is_string($handler[0])) {
+                    $handler[0] = new $handler[0]();
+                }
+                
+                call_user_func($handler, $params);
                 return;
             }
         }

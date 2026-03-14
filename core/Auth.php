@@ -34,6 +34,7 @@ class Auth
         // Strip password from session-stored data
         unset($user['password']);
         $_SESSION[self::SESSION_KEY] = $user;
+        session_regenerate_id(true);
 
         if ($remember) {
             self::issueRememberCookie((int) $user['id']);
@@ -85,7 +86,7 @@ class Auth
         // Revoke remember token from DB
         if (isset($_COOKIE[self::COOKIE_NAME])) {
             $token = $_COOKIE[self::COOKIE_NAME];
-            Database::insert('DELETE FROM remember_tokens WHERE token = ?', [$token]);
+            Database::execute('DELETE FROM remember_tokens WHERE token = ?', [$token]);
             setcookie(self::COOKIE_NAME, '', time() - 3600, '/', '', false, true);
         }
 
@@ -100,7 +101,9 @@ class Auth
         $token   = bin2hex(random_bytes(40));
         $expires = date('Y-m-d H:i:s', time() + self::COOKIE_DAYS * 86400);
 
-        // Remove any old tokens for this user (optional: allow multi-device)
+        // Remove any old tokens for this user to prevent unbounded growth
+        Database::execute('DELETE FROM remember_tokens WHERE user_id = ?', [$userId]);
+
         Database::insert(
             'INSERT INTO remember_tokens (user_id, token, expires_at) VALUES (?, ?, ?)',
             [$userId, $token, $expires]

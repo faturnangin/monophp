@@ -15,8 +15,12 @@ class ComponentParser {
             }
 
             $file = __DIR__."/../app/components/".$component.".php";
-            if(!file_exists($file)) return "";
+            if(!file_exists($file)) {
+                trigger_error("MonoPHP Component not found: <{$component}>", E_USER_WARNING);
+                return "";
+            }
 
+            // Expose props to the component
             extract($vars);
 
             ob_start();

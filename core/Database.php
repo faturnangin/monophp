@@ -53,12 +53,37 @@ class Database
         return $row === false ? null : $row;
     }
 
-    /** Execute a statement (INSERT / UPDATE / DELETE) and return last insert ID. */
+    /** Execute a statement (UPDATE / DELETE) and return success boolean. */
+    public static function execute(string $sql, array $bindings = []): bool
+    {
+        $stmt = self::connection()->prepare($sql);
+        return $stmt->execute($bindings);
+    }
+
+    /** Execute an INSERT statement and return the last insert ID. */
     public static function insert(string $sql, array $bindings = []): string|false
     {
         $stmt = self::connection()->prepare($sql);
         $stmt->execute($bindings);
         return self::connection()->lastInsertId();
+    }
+
+    /** Begin a new database transaction. */
+    public static function beginTransaction(): bool
+    {
+        return self::connection()->beginTransaction();
+    }
+
+    /** Commit the active database transaction. */
+    public static function commit(): bool
+    {
+        return self::connection()->commit();
+    }
+
+    /** Rollback the active database transaction. */
+    public static function rollback(): bool
+    {
+        return self::connection()->rollBack();
     }
 
     /** Execute a raw statement (CREATE TABLE, ALTER, etc.). */

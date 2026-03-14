@@ -9,6 +9,7 @@
 class Env
 {
     private static bool $loaded = false;
+    private static array $appliedKeys = [];
 
     /**
      * Load a .env file. Safe to call multiple times — only loads once.
@@ -50,16 +51,30 @@ class Env
             elseif ($lower === 'null')  $value = null;
             elseif (is_numeric($value)) $value = $value + 0; // cast to int/float
 
-            if (!array_key_exists($key, $_ENV)) {
+            if (!array_key_exists($key, $_ENV) || in_array($key, self::$appliedKeys)) {
                 $_ENV[$key]    = $value;
                 $_SERVER[$key] = $value;
                 if (is_string($value) || is_numeric($value)) {
                     putenv("$key=$value");
                 }
+                if (!in_array($key, self::$appliedKeys)) {
+                    self::$appliedKeys[] = $key;
+                }
             }
         }
 
         self::$loaded = true;
+    }
+
+    /**
+     * Force a reload of the .env file (useful after writing config during setup).
+     *
+     * @param string $path  Absolute path to the .env file.
+     */
+    public static function reload(string $path): void
+    {
+        self::$loaded = false;
+        self::load($path);
     }
 
     /**
@@ -123,6 +138,7 @@ class Env
         }
 
         file_put_contents($path, implode(PHP_EOL, $lines) . PHP_EOL);
+        self::reload($path);
     }
 
     private static function formatValue(mixed $value): string
