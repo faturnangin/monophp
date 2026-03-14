@@ -51,15 +51,13 @@ class Env
             elseif ($lower === 'null')  $value = null;
             elseif (is_numeric($value)) $value = $value + 0; // cast to int/float
 
-            if (!array_key_exists($key, $_ENV) || in_array($key, self::$appliedKeys)) {
+            if (!array_key_exists($key, $_ENV) || isset(self::$appliedKeys[$key])) {
                 $_ENV[$key]    = $value;
                 $_SERVER[$key] = $value;
                 if (is_string($value) || is_numeric($value)) {
                     putenv("$key=$value");
                 }
-                if (!in_array($key, self::$appliedKeys)) {
-                    self::$appliedKeys[] = $key;
-                }
+                self::$appliedKeys[$key] = true;
             }
         }
 

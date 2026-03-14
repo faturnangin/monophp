@@ -70,11 +70,17 @@ class Router
                 $params = array_filter($matches, fn($k) => !is_int($k), ARRAY_FILTER_USE_KEY);
                 
                 $handler = $route['handler'];
-                if (is_array($handler) && is_string($handler[0])) {
-                    $handler[0] = new $handler[0]();
-                }
                 
-                call_user_func($handler, $params);
+                try {
+                    if (is_array($handler) && is_string($handler[0])) {
+                        $handler[0] = new $handler[0]();
+                    }
+                    call_user_func($handler, $params);
+                } catch (\Throwable $e) {
+                    http_response_code(500);
+                    View::render('errors/500', ['error' => $e->getMessage()], 'main');
+                }
+
                 return;
             }
         }
