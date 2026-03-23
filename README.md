@@ -11,10 +11,11 @@
 ## ✨ Features
 
 - **Setup Wizard**: Out-of-the-box browser setup for URL, Environment, and Database Configuration.
-- **Dynamic Routing**: Expressive `GET` & `POST` routes with named parameters.
+- **Dynamic Routing & MVC**: Expressive `GET` & `POST` routes with named parameters. Supports Closures or auto-loaded `app/controllers/`.
 - **Auth System**: Built-in login with password hashing and "Remember Me" sessions.
-- **Database Wrapper**: Fluent PDO-based query builder (`Query()`, `First()`, `Insert()`).
+- **Database Wrapper**: Fluent PDO-based queries (`query()`, `first()`, `execute()`) with Multi-Database support.
 - **Middleware**: Guard your application using global and route-specific middleware (`auth`, `guest`, `csrfProtection`).
+- **Graceful Exceptions**: Intercepts fatal errors and CSRF violations to present beautiful 403 & 500 pages.
 - **Tailwind CSS v4**: Built-in NPM pipeline for compiled design. No CDNs needed.
 - **HTMX Integration**: Enjoy blazing-fast SPA navigation without writing JavaScript.
 - **Asset Helper**: Smart CSS/JS paths with automatic MD5 Cache-Busting.
@@ -75,12 +76,13 @@ There you will find a full guide on:
 monophp/
 ├── app/
 │   ├── components/       # JSX-like UI elements (e.g. AlertBox.php)
+│   ├── controllers/      # Optional MVC controllers (e.g. HomeController.php)
 │   ├── layouts/          # HTML wrappers (main.php, auth.php, setup.php)
 │   └── pages/            # View files mapped to routes (index.php, auth/login.php)
 ├── core/
 │   ├── AssetHelper.php   # URL versioning for static files
 │   ├── Auth.php          # Session and Remember Me management
-│   ├── Database.php      # PDO Wrapper
+│   ├── Database.php      # PDO Wrapper with Multi-DB & Transaction support
 │   ├── Env.php           # Local .env configuration parser
 │   ├── Middleware.php    # Request interceptors
 │   ├── Router.php        # Core Routing engine
